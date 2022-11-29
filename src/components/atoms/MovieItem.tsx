@@ -17,11 +17,12 @@ export type MovieItemProps = {
   id: string;
   title: string;
   selected?: boolean;
+  onItemClicked: Function;
 };
 
-const MovieItem: FC<MovieItemProps> = ({ title, selected }) => {
+const MovieItem: FC<MovieItemProps> = ({ id, title, selected, onItemClicked }) => {
   return (
-    <div style={movieItemStyle(selected)} onClick={() => console.log(title)}>
+    <div style={movieItemStyle(selected)} onClick={() => onItemClicked(id)}>
       {title}
     </div>
   );

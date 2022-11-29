@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useState } from "react";
+import { CSSProperties, FC, useState, useMemo } from "react";
 
 import MovieList from "../molecules/MovieList";
 import MoviePreview from "../molecules/MoviePreview";
@@ -9,7 +9,7 @@ const movieCatalogueWrapperStyle: CSSProperties = {
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-evenly",
-  width: "100%"
+  width: "100%",
 };
 
 const movieSectionWrapperStyle: CSSProperties = {
@@ -17,20 +17,20 @@ const movieSectionWrapperStyle: CSSProperties = {
   height: "calc(100vh - 60px)",
   display: "flex",
   flexDirection: "column",
-  alignItems: "center"
+  alignItems: "center",
 };
 
 const moviePreviewWrapperStyle: CSSProperties = {
   ...movieSectionWrapperStyle,
   textAlign: "center",
   marginRight: "1em",
-  alignSelf: "flex-start"
+  alignSelf: "flex-start",
 };
 
 const movieListWrapperStyle: CSSProperties = {
   ...movieSectionWrapperStyle,
   textAlign: "left",
-  alignSelf: "flex-end"
+  alignSelf: "flex-end",
 };
 
 type MovieData = {
@@ -48,10 +48,15 @@ type MovieCatalogueProps = {
 };
 
 const MovieCatalogue: FC<MovieCatalogueProps> = ({ movieListData }) => {
-  const [selectedMovieId] = useState<string>(movieListData[0].id);
-  const selectedMovie =
-    movieListData.find((movie) => movie.id === selectedMovieId) ||
-    movieListData[0];
+  const [selectedMovieId, onSelectTitle] = useState<string>(
+    movieListData[0].id
+  );
+  const selectedMovie = useMemo(() => {
+    return (
+      movieListData.find((movie) => movie.id === selectedMovieId) ||
+      movieListData[0]
+    );
+  }, [movieListData, selectedMovieId]);
 
   const { title, poster, year, director, casts, genre } = selectedMovie;
   return (
@@ -70,6 +75,7 @@ const MovieCatalogue: FC<MovieCatalogueProps> = ({ movieListData }) => {
         <MovieList
           movieItemList={movieListData}
           selectedMovieId={selectedMovieId}
+          onSelectTitle={onSelectTitle}
         />
       </div>
     </div>
