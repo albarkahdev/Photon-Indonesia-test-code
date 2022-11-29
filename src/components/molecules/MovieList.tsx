@@ -7,15 +7,21 @@ const movieListStyles: CSSProperties = {
   paddingTop: "1em",
   width: "100%",
   display: "flex",
-  flexDirection: "column"
+  flexDirection: "column",
+  cursor: "pointer",
 };
 
 type MovieListProps = {
   movieItemList: Omit<MovieItemProps, "onItemClicked">[];
   selectedMovieId: string;
+  onSelectTitle: Function;
 };
 
-const MovieList: FC<MovieListProps> = ({ movieItemList, selectedMovieId }) => {
+const MovieList: FC<MovieListProps> = ({
+  movieItemList,
+  selectedMovieId,
+  onSelectTitle,
+}) => {
   return (
     <div style={movieListStyles}>
       {movieItemList.map(({ id, title }) => {
@@ -25,6 +31,7 @@ const MovieList: FC<MovieListProps> = ({ movieItemList, selectedMovieId }) => {
             id={id}
             title={title}
             selected={id === selectedMovieId}
+            onItemClicked={onSelectTitle}
           />
         );
       })}
